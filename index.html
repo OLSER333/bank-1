@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>calc</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    <link href="./css/style.css" rel="stylesheet" />
+    <style>
+      .mortgage-calculator input[type="range"] {
+        width: 100%;
+        /* height: 3px; */
+        border-radius: 4px;
+        outline: none;
+        -webkit-transition: 0.2s;
+        transition: opacity 0.2s;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+      .mortgage-calculator input[type="range"].form-control-range {
+        /* height: 2.2em; */
+        -webkit-appearance: none;
+      }
+
+      /*progress support*/
+      .mortgage-calculator
+        input[type="range"].form-control-range.slider-progress {
+        --range: calc(var(--max) - var(--min));
+        --ratio: calc((var(--value) - var(--min)) / var(--range));
+        --sx: calc(0.5 * 2em + var(--ratio) * (100% - 2em));
+      }
+
+      .mortgage-calculator input[type="range"].form-control-range:focus {
+        outline: none;
+      }
+
+      /*webkit*/
+      .mortgage-calculator
+        input[type="range"].form-control-range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 2em;
+        height: 2em;
+        border-radius: 1em;
+        background: #ffdd66;
+        border: none;
+        box-shadow: 0 0 2px black;
+        margin-top: calc(max((1em - 1px - 1px) * 0.5, 0px) - 2em * 0.5);
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range::-webkit-slider-runnable-track {
+        height: 1em;
+        border: 1px solid #b2b2b2;
+        /* border-radius: 0.5em; */
+        background: #efefef;
+        box-shadow: none;
+        margin-top: -6px;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range::-webkit-slider-thumb:hover {
+        background: #ffcd1c;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range:hover::-webkit-slider-runnable-track {
+        background: #e5e5e5;
+        border-color: #9a9a9a;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range::-webkit-slider-thumb:active {
+        background: #ffcd1c;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range:active::-webkit-slider-runnable-track {
+        background: #f5f5f5;
+        border-color: #c1c1c1;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range.slider-progress::-webkit-slider-runnable-track {
+        background: linear-gradient(#ffdd66, #ffdd66) 0 / var(--sx) 100%
+            no-repeat,
+          #efefef;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range.slider-progress:hover::-webkit-slider-runnable-track {
+        background: linear-gradient(#ffcd1c, #ffcd1c) 0 / var(--sx) 100%
+            no-repeat,
+          #e5e5e5;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range.slider-progress:active::-webkit-slider-runnable-track {
+        background: linear-gradient(#ffcd1c, #ffcd1c) 0 / var(--sx) 100%
+            no-repeat,
+          #f5f5f5;
+      }
+
+      /*mozilla*/
+      .mortgage-calculator
+        input[type="range"].form-control-range::-moz-range-thumb {
+        width: 2em;
+        height: 2em;
+        border-radius: 1em;
+        background: #ffdd66;
+        border: none;
+        box-shadow: 0 0 2px black;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range::-moz-range-track {
+        height: max(calc(1em - 1px - 1px), 0px);
+        border: 1px solid #b2b2b2;
+        border-radius: 0.5em;
+        background: #efefef;
+        box-shadow: none;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range::-moz-range-thumb:hover {
+        background: #ffcd1c;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range:hover::-moz-range-track {
+        background: #e5e5e5;
+        border-color: #9a9a9a;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range::-moz-range-thumb:active {
+        background: #ffcd1c;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range:active::-moz-range-track {
+        background: #f5f5f5;
+        border-color: #c1c1c1;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range.slider-progress::-moz-range-track {
+        background: linear-gradient(#ffdd66, #ffdd66) 0 / var(--sx) 100%
+            no-repeat,
+          #efefef;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range.slider-progress:hover::-moz-range-track {
+        background: linear-gradient(#ffcd1c, #ffcd1c) 0 / var(--sx) 100%
+            no-repeat,
+          #e5e5e5;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range.slider-progress:active::-moz-range-track {
+        background: linear-gradient(#ffcd1c, #ffcd1c) 0 / var(--sx) 100%
+            no-repeat,
+          #f5f5f5;
+      }
+
+      /*ms*/
+      .mortgage-calculator
+        input[type="range"].form-control-range::-ms-fill-upper {
+        background: transparent;
+        border-color: transparent;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range::-ms-fill-lower {
+        background: transparent;
+        border-color: transparent;
+      }
+
+      .mortgage-calculator input[type="range"].form-control-range::-ms-thumb {
+        width: 2em;
+        height: 2em;
+        border-radius: 1em;
+        background: #ffdd66;
+        border: none;
+        box-shadow: 0 0 2px black;
+        margin-top: 0;
+        box-sizing: border-box;
+      }
+
+      .mortgage-calculator input[type="range"].form-control-range::-ms-track {
+        height: 1em;
+        border-radius: 0.5em;
+        background: #efefef;
+        border: 1px solid #b2b2b2;
+        box-shadow: none;
+        box-sizing: border-box;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range::-ms-thumb:hover {
+        background: #ffcd1c;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range:hover::-ms-track {
+        background: #e5e5e5;
+        border-color: #9a9a9a;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range::-ms-thumb:active {
+        background: #ffcd1c;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range:active::-ms-track {
+        background: #f5f5f5;
+        border-color: #c1c1c1;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range.slider-progress::-ms-fill-lower {
+        height: max(calc(1em - 1px - 1px), 0px);
+        border-radius: 0.5em 0 0 0.5em;
+        margin: -1px 0 -1px -1px;
+        background: #ffdd66;
+        border: 1px solid #b2b2b2;
+        border-right-width: 0;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range.slider-progress:hover::-ms-fill-lower {
+        background: #ffcd1c;
+        border-color: #9a9a9a;
+      }
+
+      .mortgage-calculator
+        input[type="range"].form-control-range.slider-progress:active::-ms-fill-lower {
+        background: #ffcd1c;
+        border-color: #c1c1c1;
+      }
+
+      /* Табы */
+      .tab input,
+      .tab-content {
+        display: none;
+      }
+      .tab {
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        color: #cccccc;
+        margin-bottom: 30px;
+      }
+      .tab-title {
+        height: 58px;
+        padding: 10px;
+        display: block;
+        font-weight: bold;
+        cursor: pointer;
+        line-height: 34px;
+      }
+      .tab-title::after {
+        content: "+";
+        float: right;
+      }
+      .tab-content {
+        padding: 10px 20px;
+      }
+      .tab :checked + .tab-title {
+        background-color: #ffdd66;
+        color: #000;
+        border-radius: 3px 3px 0 0;
+      }
+      .tab :checked + .tab-title::after {
+        content: "−";
+      }
+      .tab :checked ~ .tab-content {
+        display: block;
+      }
+      .tab span {
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 16px;
+        color: #737373;
+      }
+      #credit-summ {
+        font-weight: bold;
+      }
+      #percent {
+        font-weight: bold;
+      }
+      #bank-percent-span {
+        font-weight: bold;
+      }
+      .tab-content {
+        color: #000;
+      }
+      /* Табы end */
+    </style>
+  </head>
+  <body>
+    <section id="mortgage-calculator-section">
+      <div class="container">
+        <div class="row mortgage-calculator">
+          <div class="col-md-6 col-xs-12">
+            <div class="form-group Bawqunue">
+              <label for="object-price">Стоимость квартиры, ₽</label>
+              <div class="range-output">
+                <input class="money text-input" id="object-price-output" />
+                <input type="hidden" id="object-price-hidden" />
+              </div>
+              <input
+                type="range"
+                list="object-price-tickmarks"
+                min="500000"
+                max="10000000"
+                value="3500000"
+                class="form-control-range"
+                id="object-price"
+              />
+              <!--
+							<datalist id="object-price-tickmarks">
+							  <option value="500000" label="500 тыс.">
+							  <option value="1000000">
+							  <option value="1500000">
+							  <option value="2000000">
+							  <option value="2500000">
+							  <option value="3000000">
+							  <option value="3500000">
+							  <option value="4000000">
+							  <option value="4500000">
+							  <option value="5000000">
+							  <option value="5500000">
+							  <option value="6000000">
+							  <option value="6500000">
+							  <option value="7000000">
+							  <option value="7500000">
+							  <option value="8000000">
+							  <option value="8500000">
+							  <option value="9000000">
+							  <option value="9500000">
+							  <option value="10000000" label="10 млн.">
+							</datalist>
+							-->
+            </div>
+
+            <div class="form-group Bawqunue">
+              <label for="first-payment">Первоначальный взнос, ₽</label>
+              <div class="range-output">
+                <input
+                  class="money text-input"
+                  name=""
+                  id="first-payment-output"
+                />
+                <input type="hidden" id="first-payment-hidden" />
+              </div>
+              <input
+                type="range"
+                list="first-payment-tickmarks"
+                min="300000"
+                max="5000000"
+                value="1000000"
+                class="form-control-range"
+                id="first-payment"
+              />
+              <!--
+							<datalist id="first-payment-tickmarks">
+							  <option value="300000" label="300 тыс.">
+							  <option value="500000">
+							  <option value="1000000">
+							  <option value="1500000">
+							  <option value="2000000">
+							  <option value="2500000">
+							  <option value="3000000">
+							  <option value="4500000">
+							  <option value="5000000" label="5 млн.">
+							</datalist>
+							-->
+            </div>
+
+            <div class="form-group Bawqunue">
+              <label for="years">Срок, лет</label>
+              <div class="range-output">
+                <input class="text-input" name="" id="years-output" />
+              </div>
+              <input
+                type="range"
+                list="years-tickmarks"
+                min="1"
+                max="30"
+                value="20"
+                class="form-control-range"
+                id="years"
+              />
+              <!--
+							<datalist id="tickmarks years-tickmarks">
+							  <option value="1" label="1 год">
+							  <option value="30" label="30 лет">
+							</datalist>
+							-->
+            </div>
+
+
+            <!-- <div class="form-group">
+              <label for="percent">Ипотечные программы</label>
+              <p>Выберите ипотечную программу или введите % ставку</p>
+              <div id="percent">
+                <select id="bank-select">
+                  <option value="1.99" selected>
+                    Ипотека от ПСБ со ставкой 1,99%
+                  </option>
+                  <option value="2.99">Ипотека от ПСБ со ставкой 2,99%</option>
+                  <option value="4.3">
+                    «Семейная военная ипотека» от ПСБ со ставкой 4,3%
+                  </option>
+                </select>
+                <div class="bank-percent">
+                  <input
+                    class="text-input-percent"
+                    id="bank-percent-span"
+                    value="1.99"
+                  />%
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <div class="col-md-6 col-xs-12">
+            <!--div class="mc-item mc-item-first">
+						<p>Сумма кредита</p>
+						<p class="mc-item-number"><span id="credit-summ">2 500 000,00</span> ₽</p>
+						<hr>
+					</div>
+					<div class="mc-item">
+						<p>Ежемесячный платеж</p>
+						<p class="mc-item-number"><span id="month-pay">18 639,33</span> ₽</p>
+						<hr>
+					</div>
+					<div class="mc-item">
+						<p>Ежемесячный платеж c нами</p>
+						<p class="mc-item-number"><span id="month-pay-with-us">17 910,78</span> ₽</p>
+					</div>
+					<div class="mc-item mc-item-safe">
+						<p>Сэкономьте на ипотеке до</p>
+						<p class="mc-item-number"><span id="your-safe">174 852,85</span> ₽</p>
+					</div>
+
+					<div class="mc-item-bottom">
+						<p>Получите одобрение ипотеки<br>с этими условиями</p>
+						<button type="submit" class="calc-submit-btn popmake-ipoteka-calc pum-trigger" id="calc-submit" style="cursor: pointer;">Подать заявку</button>
+					</div-->
+
+            <div class="accordion mt-4">
+              <div class="tab">
+                <input type="checkbox" id="tab1" name="tab-group" />
+                <label for="tab1" class="tab-title"
+                  ><img
+                    src="/img/psb.png"
+                    style="
+                      height: 20px;
+                      margin-right: 10px;
+                      padding-bottom: 2px;
+                    "
+                  />Ипотека от ПСБ
+                  <span>Ставка: <span id="bank-percent1">1,99%</span></span>
+                  <span>Платеж: <span id="month-pay">18 639,33</span> ₽</span>
+                </label>
+                <section class="tab-content">
+                  <p>
+                    ООО Комфортный город и ПАО «Промсвязьбанк» предлагают
+                    совместную субсидированную программу со ставкой 1,99% на
+                    первые 2 года кредитования в рамках льготной ипотеки.
+                    Процентная ставка на последующие года составит 8,59%.
+                    Первоначальный взнос - от 15%, срок кредитования - до 25
+                    лет. Сумма кредита может составлять до 6 млн руб. Для того,
+                    чтобы воспользоваться предложением, необходимо подписать
+                    договор на приобретение квартиры с 11.05.2022 г. по
+                    31.05.2022 г. включительно. Предложение не является
+                    публичной офертой. Более подробная информация доступна по
+                    телефону: 8 (800) 533-91-44.
+                  </p>
+                </section>
+              </div>
+              <div class="tab">
+                <input type="checkbox" id="tab2" name="tab-group" />
+                <label for="tab2" class="tab-title"
+                  ><img
+                    src="/img/psb.png"
+                    style="
+                      height: 20px;
+                      margin-right: 10px;
+                      padding-bottom: 2px;
+                    "
+                  />Ипотека от ПСБ
+                  <span>Ставка: <span id="bank-percent2">2,99%</span></span>
+                  <span
+                    >Платеж: <span id="month-pay1">21 400,33</span> ₽</span
+                  ></label
+                >
+                <section class="tab-content">
+                  <p>
+                    ООО Комфортный город и ПАО «Промсвязьбанк» предлагают
+                    совместную субсидированную программу со ставкой 2,99% на
+                    весь срок кредитования в рамках льготной ипотеки.
+                    Первоначальный взнос - от 15%, срок кредитования - до 30
+                    лет. Сумма кредита может составлять до 6 млн руб. Для того,
+                    чтобы воспользоваться предложением, необходимо подписать
+                    договор на приобретение квартиры с 11.05.2022 г. по
+                    31.05.2022 г. включительно. Предложение не является
+                    публичной офертой. Более подробная информация доступна по
+                    телефону: 8 (800) 533-91-44.
+                  </p>
+                </section>
+              </div>
+              <div class="tab">
+                <input type="checkbox" id="tab3" name="tab-group" />
+                <label for="tab3" class="tab-title"
+                  ><img
+                    src="/img/psb.png"
+                    style="
+                      height: 20px;
+                      margin-right: 10px;
+                      padding-bottom: 2px;
+                    "
+                  />«Семейная военная ипотека»
+                  <span>Ставка: <span id="bank-percent3">4,3%</span></span>
+                  <span
+                    >Платеж: <span id="month-pay2">29 749,33</span> ₽</span
+                  ></label
+                >
+                <section class="tab-content">
+                  <p>
+                    ООО Комфортный город и ПАО «Промсвязьбанк» предлагают
+                    совместную субсидированную программу со ставкой 2,99% на
+                    весь срок кредитования в рамках льготной ипотеки.
+                    Первоначальный взнос - от 15%, срок кредитования - до 30
+                    лет. Сумма кредита может составлять до 6 млн руб. Для того,
+                    чтобы воспользоваться предложением, необходимо подписать
+                    договор на приобретение квартиры с 11.05.2022 г. по
+                    31.05.2022 г. включительно. Предложение не является
+                    публичной офертой. Более подробная информация доступна по
+                    телефону: 8 (800) 533-91-44.
+                  </p>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./js/script.js"></script>
+  </body>
+</html>
